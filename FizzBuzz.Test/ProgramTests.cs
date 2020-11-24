@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FizzBuzz.Main;
 
@@ -119,5 +121,65 @@ namespace FizzBuzz.Test
             Assert.AreEqual(expectedResult, result);
         }
 
+        [TestMethod]
+        public void PrintMenu_Should_successfully_print_menu()
+        {
+            // Arrange
+            var sw = new StringWriter();
+            var expected = string.Format("Enter an integer between 1 and 300{0}", Environment.NewLine);
+            Console.SetOut(sw);
+            //Act
+            Program.PrintMenu();
+            //Assert
+            Assert.AreEqual(expected, sw.ToString());
+        }
+
+        [TestMethod]
+        public void PrintResult_Should_successfully_print_result()
+        {
+            // Arrange
+            var sw = new StringWriter();
+            var input = 1;
+            var expected = input.ToString() + Environment.NewLine;
+                
+            Console.SetOut(sw);
+            //Act
+            Program.PrintResult(input);
+            //Assert
+            Assert.AreEqual(expected, sw.ToString());
+        }
+
+        [TestMethod]
+        public void If_input_is_invalid_PrintResult_Should_print_error_message()
+        {
+
+            // Arrange
+            var sw = new StringWriter();
+            var input = -1;
+            var expected = "Input must be an integer between 1 and 300" + Environment.NewLine;
+
+            Console.SetOut(sw);
+            //Act
+            Program.PrintResult(input);
+            //Assert
+            Assert.AreEqual(expected, sw.ToString());
+        }
+
+        [TestMethod]
+        public void If_input_is_valid_should_return_input_as_int()
+        {
+            // Arrange
+            var input = "5";
+            var expected = int.Parse(input);
+
+            var sr = new StringReader(input);
+            Console.SetIn(sr);
+
+            //Act
+            var result = Program.GetUserInput();
+
+            //Assert
+            Assert.AreEqual(expected, result);
+        }
     }
 }
